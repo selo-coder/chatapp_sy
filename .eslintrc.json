@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "plugin:jsx-a11y/recommended",
+    "next/core-web-vitals",
+    "plugin:jest/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/no-array-index-key": "off"
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
+}
