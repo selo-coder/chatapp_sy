@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
+import socket from "@/socket"
 import Modal from "./modal"
 import Button from "../common/button"
 
@@ -17,7 +18,7 @@ export default function SignOutModal({ setShowModal }: SignOutModalProps) {
     <Modal
       showModal
       backgroundBlur
-      closeOnOutsideClick
+      closeOnOutsideClick={false}
       verticalAlign="center"
       setShowModal={setShowModal}
     >
@@ -29,7 +30,11 @@ export default function SignOutModal({ setShowModal }: SignOutModalProps) {
         <div className="flex flex-row w-full gap-8">
           <Button
             type="button"
-            onClick={() => router.push("/")}
+            onClick={() => {
+              if (socket.connected === false) socket.connect()
+
+              router.push("/")
+            }}
             label="Zur Hauptseite"
           />
 
@@ -37,6 +42,8 @@ export default function SignOutModal({ setShowModal }: SignOutModalProps) {
             type="button"
             onClick={async () => {
               const response = await signOut({ redirect: false })
+
+              if (socket.connected === true) socket.disconnect()
 
               if (response) setShowModal(false)
             }}

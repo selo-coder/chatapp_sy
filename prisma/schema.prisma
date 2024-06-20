@@ -26,4 +26,6 @@ model PersonalChat {
   recipient             Account    @relation("ReceivedChats", fields: [recipientId], references: [id], onDelete: Cascade)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt @default(now())
+  textMessage           String
+
 }

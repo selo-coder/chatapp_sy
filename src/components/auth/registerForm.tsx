@@ -10,6 +10,8 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import Link from "next/link"
 import hashPassword from "@/utils/hashString"
+import socket from "@/socket"
+import { useCookies } from "react-cookie"
 import Button from "../common/button"
 import Input from "../common/input"
 
@@ -23,6 +25,7 @@ export default function RegisterForm() {
     reValidateMode: "onBlur",
     resolver: zodResolver(registerPostValidation),
   })
+  const [, , removeCookie] = useCookies()
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
@@ -50,6 +53,11 @@ export default function RegisterForm() {
       })
 
       if (signInResponse?.ok) {
+        removeCookie("password")
+        removeCookie("userName")
+
+        if (socket.connected === false) socket.connect()
+
         router.push("/")
       } else {
         setErrorMessage(
@@ -107,7 +115,7 @@ export default function RegisterForm() {
         {...register("password")}
       />
 
-      <Button label="Login" isLoading={registerIsLoading} />
+      <Button label="Registrieren" isLoading={registerIsLoading} />
 
       <Link
         className="w-fit underline text-xs hover:text-white"

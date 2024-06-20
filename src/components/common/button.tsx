@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge"
 
-type ButtonProps = {
+export type ButtonProps = {
   className?: string
   label: string
   isLoading?: boolean
@@ -39,7 +39,7 @@ export default function Button({
             cy="12"
             r="10"
             stroke="currentColor"
-            stroke-width="4"
+            strokeWidth="4"
           />
           <path
             className="opacity-75"

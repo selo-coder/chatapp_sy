@@ -1,78 +1,81 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { signIn, signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
+import { Account } from "@/types/account"
+import { PersonalChat } from "@/types/personalChat"
+import UserList from "@/components/mainPage/userList"
+import Chat from "@/components/mainPage/chat"
+import { getAllUsersClient } from "@/socket/getAllUsers"
+import { sendTextMessageClient } from "@/socket/sendTextMessage"
+import { getAllMessagesClient } from "@/socket/getAllMessages"
+import { sendOnlineStatusClient } from "@/socket/sendOnlineStatus"
 import socket from "../../socket"
 
 export default function Home() {
-  const router = useRouter()
-  const [isConnected, setIsConnected] = useState(false)
-  const [transport, setTransport] = useState("N/A")
-
-  function onConnect() {
-    setIsConnected(true)
-    setTransport(socket.io.engine.transport.name)
-
-    socket.io.engine.on("upgrade", (transportProp) => {
-      setTransport(transportProp.name)
-    })
-  }
-
-  const { data: session } = useSession()
+  const { data } = useSession()
+  const [userList, setUserList] = useState<Account[]>()
+  const [currentSelectedChatUser, setCurrentSelectedChatUser] =
+    useState<Account>()
+  const [currentLoadedChat, setCurrentLoadedChat] = useState<PersonalChat[]>()
 
   useEffect(() => {
+    if (socket.connected === false) socket.connect()
+
+    function initialSocketEmits() {
+      if (data?.user.id && !userList) {
+        socket.emit("sendInitialUserInfo", data?.user.id)
+        socket.emit("getAllUsers", data.user.id)
+      }
+    }
+
+    // Initial Emits on Reconnect
+    socket.on("connect", initialSocketEmits)
+
+    // Initial Emits on first Connect
     if (socket.connected) {
-      onConnect()
+      initialSocketEmits()
     }
 
-    function onDisconnect() {
-      setIsConnected(false)
-      setTransport("N/A")
-    }
+    // Socket.on event to receive all users list
+    getAllUsersClient({
+      currentSelectedChatUser,
+      setCurrentSelectedChatUser,
+      setUserList,
+      socket,
+    })
 
-    socket.on("connect", onConnect)
-    socket.on("disconnect", onDisconnect)
+    // Socket.on event to receive newly send text message
+    sendTextMessageClient({ setCurrentLoadedChat, socket })
+
+    // Socket.on event to receive all messages of a chat between two people
+    getAllMessagesClient({ setCurrentLoadedChat, socket })
+
+    // Socket.on event to receive change of an online status
+    sendOnlineStatusClient({ setUserList, socket })
 
     return () => {
-      socket.off("connect", onConnect)
-      socket.off("disconnect", onDisconnect)
+      socket.off("sendTextMessage")
+      socket.off("getAllUsers")
+      socket.off("getAllMessages")
+      socket.off("connect", initialSocketEmits)
+      socket.off("sendOnlineStatus")
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <div>
-      <p>Status: {isConnected ? "connected" : "disconnected"}</p>
-      <p>Transport: {transport}</p>
-
-      <div className="bg-gradient-to-b from-cyan-50 to-cyan-200 p-2 flex gap-5 ">
-        <div className="ml-auto flex gap-2">
-          {session?.user ? (
-            <>
-              <p className="text-red-500"> {session.user.email}</p>
-              <button
-                type="button"
-                className="text-red-500"
-                onClick={async () => {
-                  const response = await signOut({ redirect: false })
-
-                  if (response) router.push("/auth/login")
-                }}
-              >
-                Sign Out
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              className="text-green-600"
-              onClick={() => signIn()}
-            >
-              Sign In
-            </button>
-          )}
-        </div>
-      </div>
+    <div className="w-full h-full flex flex-row gap-8 p-8 ">
+      <UserList
+        setCurrentSelectedChatUser={setCurrentSelectedChatUser}
+        userList={userList}
+      />
+      <Chat
+        setUserList={setUserList}
+        userList={userList}
+        currentLoadedChat={currentLoadedChat}
+        currentSelectedChatUser={currentSelectedChatUser}
+      />
     </div>
   )
 }

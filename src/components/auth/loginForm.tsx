@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import Link from "next/link"
 import { useCookies } from "react-cookie"
+import socket from "@/socket"
 import Button from "../common/button"
 import Input from "../common/input"
 import Checkbox from "../common/checkbox"
@@ -50,9 +51,11 @@ export default function LoginForm() {
 
     if (response && response.ok) {
       if (cookieIsActive) {
-        await setCookie("password", password)
-        await setCookie("userName", userName)
+        setCookie("password", password)
+        setCookie("userName", userName)
       }
+
+      if (socket.connected === false) socket.connect()
 
       router.push("/")
     } else {
