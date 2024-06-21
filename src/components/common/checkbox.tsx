@@ -18,7 +18,7 @@ export default function Checkbox({
         <input
           {...checkboxProps}
           className={twMerge(
-            "w-fit w-4 h-4 absolute top-1 z-10 bg-transparent cursor-pointer rounded-sm border hover:border-gray-300 border-gray-500 appearance-none",
+            "w-4 h-4 absolute top-1 z-10 bg-transparent cursor-pointer rounded-sm border hover:border-gray-300 border-gray-500 appearance-none",
             className
           )}
           type="checkbox"

@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react"
 import { Account } from "@/types/account"
 import { PersonalChat } from "@/types/personalChat"
 import UserList from "@/components/mainPage/userList"
-import Chat from "@/components/mainPage/chat"
+import ChatOverview from "@/components/mainPage/chatOverview"
 import { getAllUsersClient } from "@/socket/getAllUsers"
 import { sendTextMessageClient } from "@/socket/sendTextMessage"
 import { getAllMessagesClient } from "@/socket/getAllMessages"
@@ -70,7 +70,8 @@ export default function Home() {
         setCurrentSelectedChatUser={setCurrentSelectedChatUser}
         userList={userList}
       />
-      <Chat
+
+      <ChatOverview
         setUserList={setUserList}
         userList={userList}
         currentLoadedChat={currentLoadedChat}

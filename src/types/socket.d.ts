@@ -25,11 +25,13 @@ export interface ClientToServerEvents {
   getUsers: (userName: string) => void
   getUser: (userName: string) => void
   sendTextMessage: ({
+    image,
     textMessage,
     senderId,
     recipientId,
   }: {
-    textMessage: string
+    image: string | null
+    textMessage: string | null
     senderId: string
     recipientId: string
   }) => void
