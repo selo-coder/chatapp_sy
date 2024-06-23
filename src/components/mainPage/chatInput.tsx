@@ -24,6 +24,7 @@ export default function ChatInput({
   setUserList,
 }: ChatInputProps) {
   const { data } = useSession()
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   const { register, handleSubmit, reset, getValues, watch } =
     useForm<PostTextMessage>({
@@ -33,8 +34,6 @@ export default function ChatInput({
     })
 
   watch(["file", "textMessage"])
-
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   // Load messages, when user is changed
   useEffect(() => {
@@ -82,26 +81,25 @@ export default function ChatInput({
   return (
     <form
       onSubmit={handleSubmit(handleSendTextMessage)}
-      className="flex flex-row gap-4 pt-8 items-center"
+      className="flex flex-col md:flex-row gap-4 pt-8 items-center"
     >
       <Input {...register("textMessage")} />
-      <Button
-        type="submit"
-        className={`${
-          getValues("textMessage") === "" && !selectedImage
-            ? "bg-green/30 rounded-lg h-10 hover:bg-green/25 active:bg-green/25"
-            : ""
-        } w-fit px-4 text-sm`}
-        disabled={getValues("textMessage") === "" && !selectedImage}
-        label="Senden"
-      />
-
       <input
         {...register("file")}
         type="file"
         accept=".png,.jpg,.jpeg"
         onChange={handleImageChange}
-        className="block w-fit min-w-[256px] text-sm text-white file:cursor-pointer cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-green file:text-gray-300 hover:file:bg-green/75"
+        className="block w-full md:min-w-min md:w-min text-sm text-white file:cursor-pointer cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-green file:text-gray-300 hover:file:bg-green/75"
+      />
+      <Button
+        type="submit"
+        className={`${
+          !getValues("textMessage") && selectedImage == null
+            ? "bg-green/30 rounded-lg h-10 hover:bg-green/25 active:bg-green/25"
+            : ""
+        } w-full md:w-fit px-4 text-sm`}
+        disabled={!getValues("textMessage") && selectedImage == null}
+        label="Senden"
       />
     </form>
   )

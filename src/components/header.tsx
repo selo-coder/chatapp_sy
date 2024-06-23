@@ -27,7 +27,7 @@ export default function Header() {
   }, [observerRef])
 
   return (
-    <div className="w-full bg-dark-green h-24 flex justify-between items-center px-6 md:px-8">
+    <div className="w-full bg-dark-green h-16 md:h-24 shrink-0 !min-h-16 !md:min-h-24 flex justify-between items-center px-6 md:px-8">
       <span className="text-[clamp(1.2rem,2.5cqw,3rem)]">Chatapp by Selo</span>
 
       <div className="relative" ref={observerRef}>

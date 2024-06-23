@@ -1,6 +1,5 @@
 "use client"
 
-import { Account } from "@/types/account"
 import { PersonalChat } from "@/types/personalChat"
 import { format } from "date-fns"
 import { useSession } from "next-auth/react"
@@ -8,14 +7,10 @@ import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
 interface ChatProps {
-  currentSelectedChatUser: Account | undefined
   currentLoadedChat: PersonalChat[] | undefined
 }
 
-export default function Chat({
-  currentSelectedChatUser,
-  currentLoadedChat,
-}: ChatProps) {
+export default function Chat({ currentLoadedChat }: ChatProps) {
   const { data } = useSession()
   const ref = useRef<HTMLDivElement | null>(null)
   const [update, setUpdate] = useState(false)
@@ -39,20 +34,12 @@ export default function Chat({
   }, [currentLoadedChat])
 
   return (
-    <div>
-      <span className="text-lg">
-        {currentSelectedChatUser?.userName
-          ? `Chat mit: ${currentSelectedChatUser?.userName}`
-          : "Kein Chatnutzer ausgewählt"}
-      </span>
-      <div
-        ref={ref}
-        className="mt-8 flex flex-col w-full gap-4 overflow-y-scroll h-[64vh]"
-      >
+    <div className="grow h-full overflow-y-auto">
+      <div ref={ref} className="mt-4 md:mt-8 flex flex-col gap-4">
         {currentLoadedChat &&
           currentLoadedChat.map((chatEntry: PersonalChat, index: number) => (
             <div
-              className={`bg-green w-fit p-2 pb-5 flex flex-col gap-2 relative max-w-lg rounded-lg ${
+              className={`bg-green w-fit p-2 pb-5 flex flex-col gap-1 md:gap-2 relative max-w-lg rounded-lg ${
                 chatEntry.senderId === data?.user.id
                   ? "self-end rounded-tr-none"
                   : "rounded-tl-none"
@@ -75,7 +62,7 @@ export default function Chat({
                   src={chatEntry.imageUrl}
                 />
               )}
-              <p> {chatEntry?.textMessage}</p>
+              <p className="text-sm md:text-base"> {chatEntry?.textMessage}</p>
               <div className="w-20" />
               <span className="text-[10px] absolute right-2 bottom-1">
                 {format(new Date(chatEntry.createdAt), "dd.MM.yyyy HH:mm")}

@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }
 
   return status === "authenticated" ? (
-    <div className="bg-dark-blue min-h-screen h-full max-h-screen max-w-screen w-full overflow-hidden flex flex-col">
+    <div className="bg-dark-blue min-h-screen max-h-screen h-screen max-w-screen w-full overflow-hidden flex flex-col">
       <Header />
 
       {children}

@@ -84,14 +84,22 @@ interface SendTextMessageClientProps {
   setCurrentLoadedChat: (
     value: React.SetStateAction<PersonalChat[] | undefined>
   ) => void
+  userId: string | undefined
+  currentSelectedChatUserId: string | undefined
 }
 
 export function sendTextMessageClient({
   setCurrentLoadedChat,
   socket,
+  userId,
+  currentSelectedChatUserId,
 }: SendTextMessageClientProps) {
   socket.on("sendTextMessage", (message) => {
-    if (message)
+    if (
+      message &&
+      (userId === message.senderId ||
+        currentSelectedChatUserId === message.senderId)
+    )
       setCurrentLoadedChat((oldCurrentLoadedChat) => [
         ...(oldCurrentLoadedChat || []),
         message,
