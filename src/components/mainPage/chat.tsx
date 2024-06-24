@@ -1,10 +1,9 @@
 "use client"
 
 import { PersonalChat } from "@/types/personalChat"
-import { format } from "date-fns"
 import { useSession } from "next-auth/react"
-import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import ChatElement from "./chatElement"
 
 interface ChatProps {
   currentLoadedChat: PersonalChat[] | undefined
@@ -34,40 +33,19 @@ export default function Chat({ currentLoadedChat }: ChatProps) {
   }, [currentLoadedChat])
 
   return (
-    <div className="grow h-full overflow-y-auto">
-      <div ref={ref} className="mt-4 md:mt-8 flex flex-col gap-4">
+    <div ref={ref} className="grow h-full overflow-y-auto">
+      <div className="mt-4 md:mt-8 flex flex-col gap-2">
         {currentLoadedChat &&
           currentLoadedChat.map((chatEntry: PersonalChat, index: number) => (
-            <div
-              className={`bg-green w-fit p-2 pb-5 flex flex-col gap-1 md:gap-2 relative max-w-lg rounded-lg ${
-                chatEntry.senderId === data?.user.id
-                  ? "self-end rounded-tr-none"
-                  : "rounded-tl-none"
-              }`}
+            <ChatElement
               key={`chatEntry${chatEntry.id}`}
-            >
-              {chatEntry.imageUrl && (
-                <Image
-                  onClick={() => {
-                    handleOpenImageChange(index)
-                  }}
-                  className={`${
-                    openImageList[index] === true
-                      ? "max-w-full max-h-full"
-                      : "w-48"
-                  } cursor-pointer`}
-                  width={1000}
-                  height={1000}
-                  alt=""
-                  src={chatEntry.imageUrl}
-                />
-              )}
-              <p className="text-sm md:text-base"> {chatEntry?.textMessage}</p>
-              <div className="w-20" />
-              <span className="text-[10px] absolute right-2 bottom-1">
-                {format(new Date(chatEntry.createdAt), "dd.MM.yyyy HH:mm")}
-              </span>
-            </div>
+              chatEntry={chatEntry}
+              index={index}
+              currentLoadedChat={currentLoadedChat}
+              handleOpenImageChange={handleOpenImageChange}
+              openImageList={openImageList}
+              userId={data?.user.id}
+            />
           ))}
       </div>
     </div>

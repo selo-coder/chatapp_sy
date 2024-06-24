@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form"
 import Link from "next/link"
 import { useCookies } from "react-cookie"
 import socket from "@/socket"
+import { motion } from "framer-motion"
 import Button from "../common/button"
 import Input from "../common/input"
 import Checkbox from "../common/checkbox"
@@ -91,7 +92,13 @@ export default function LoginForm() {
   }, [cookieIsActive])
 
   return (
-    <form
+    <motion.form
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.75,
+        ease: "easeInOut",
+      }}
       onSubmit={handleSubmit(handleLogin)}
       className="flex flex-col w-full gap-8 relative"
       autoComplete="off"
@@ -135,6 +142,6 @@ export default function LoginForm() {
           {errorMessage}
         </span>
       )}
-    </form>
+    </motion.form>
   )
 }

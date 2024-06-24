@@ -81,26 +81,29 @@ export default function ChatInput({
   return (
     <form
       onSubmit={handleSubmit(handleSendTextMessage)}
-      className="flex flex-col md:flex-row gap-4 pt-8 items-center"
+      className="flex flex-col gap-4 pt-4 items-center"
     >
       <Input {...register("textMessage")} />
-      <input
-        {...register("file")}
-        type="file"
-        accept=".png,.jpg,.jpeg"
-        onChange={handleImageChange}
-        className="block w-full md:min-w-min md:w-min text-sm text-white file:cursor-pointer cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-green file:text-gray-300 hover:file:bg-green/75"
-      />
-      <Button
-        type="submit"
-        className={`${
-          !getValues("textMessage") && selectedImage == null
-            ? "bg-green/30 rounded-lg h-10 hover:bg-green/25 active:bg-green/25"
-            : ""
-        } w-full md:w-fit px-4 text-sm`}
-        disabled={!getValues("textMessage") && selectedImage == null}
-        label="Senden"
-      />
+
+      <div className="flex flex-col md:flex-row gap-4 justify-between w-full">
+        <input
+          {...register("file")}
+          type="file"
+          accept=".png,.jpg,.jpeg"
+          onChange={handleImageChange}
+          className="block w-full md:min-w-min md:w-min text-sm text-white file:cursor-pointer cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-green file:text-gray-300 hover:file:bg-green/75"
+        />
+        <Button
+          type="submit"
+          className={`${
+            !getValues("textMessage") && selectedImage == null
+              ? "bg-green/25 rounded-lg h-10 hover:bg-green/25 active:bg-green/25"
+              : ""
+          } w-full md:w-fit px-4 text-sm`}
+          disabled={!getValues("textMessage") && selectedImage == null}
+          label="Senden"
+        />
+      </div>
     </form>
   )
 }

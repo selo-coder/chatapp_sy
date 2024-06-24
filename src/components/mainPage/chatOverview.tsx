@@ -2,6 +2,7 @@
 
 import { Account } from "@/types/account"
 import { PersonalChat } from "@/types/personalChat"
+import { motion } from "framer-motion"
 import Chat from "./chat"
 import ChatInput from "./chatInput"
 import Button from "../common/button"
@@ -30,9 +31,17 @@ export default function ChatOverview({
   setCurrentLoadedChat,
 }: ChatProps) {
   return (
-    <div className="p-4 md:p-8 w-full max-h-full h-full bg-swamp-green rounded-lg flex flex-col relative">
-      <div className="w-full flex flex-row justify-between -mt-2 mb-2 items-center">
-        <span className="text-sm underline md:text-base">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.75,
+        ease: "easeInOut",
+      }}
+      className="w-full max-h-full h-full rounded-lg flex flex-col relative"
+    >
+      <div className="w-full flex flex-row justify-between mb-2 items-center">
+        <span className="text-sm md:text-lg underline flex-1 line-clamp-1 break-all pr-2">
           {currentSelectedChatUser?.userName
             ? `${currentSelectedChatUser?.userName}`
             : "Kein Chatnutzer ausgewählt"}
@@ -44,7 +53,7 @@ export default function ChatOverview({
               setCurrentLoadedChat(undefined)
               setCurrentLoadedWindow("userList")
             }}
-            className="text-xs h-6 w-fit px-2 rounded bg-dark-blue hover:bg-dark-blue/75 active:bg-dark-blue/50"
+            className="text-xs h-6 w-fit px-2 rounded bg-dark-green hover:bg-dark-green/75 active:bg-dark-green/50"
             label="Zurück zur Übersicht"
           />
         )}
@@ -57,6 +66,6 @@ export default function ChatOverview({
         setUserList={setUserList}
         userList={userList}
       />
-    </div>
+    </motion.div>
   )
 }

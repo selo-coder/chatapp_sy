@@ -12,6 +12,7 @@ import Link from "next/link"
 import hashPassword from "@/utils/hashString"
 import socket from "@/socket"
 import { useCookies } from "react-cookie"
+import { motion } from "framer-motion"
 import Button from "../common/button"
 import Input from "../common/input"
 
@@ -73,7 +74,13 @@ export default function RegisterForm() {
   }
 
   return (
-    <form
+    <motion.form
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.75,
+        ease: "easeInOut",
+      }}
       onSubmit={handleSubmit(handleRegister)}
       className="flex flex-col w-full gap-8 relative"
       autoComplete="off"
@@ -129,6 +136,6 @@ export default function RegisterForm() {
           {errorMessage}
         </span>
       )}
-    </form>
+    </motion.form>
   )
 }
