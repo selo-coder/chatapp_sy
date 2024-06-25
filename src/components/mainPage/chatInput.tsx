@@ -91,7 +91,7 @@ export default function ChatInput({
           type="file"
           accept=".png,.jpg,.jpeg"
           onChange={handleImageChange}
-          className="block w-full md:min-w-min md:w-min text-sm text-white file:cursor-pointer cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-green file:text-gray-300 hover:file:bg-green/75"
+          className="block w-full md:min-w-min duration-200 ease transition-all md:w-min text-sm text-white file:cursor-pointer cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-green file:text-gray-300 hover:file:bg-green/75 active:file:bg-green/50"
         />
         <Button
           type="submit"

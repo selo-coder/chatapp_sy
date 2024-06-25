@@ -30,7 +30,7 @@ export default function Header() {
   return (
     <div className="w-full bg-dark-green h-16 md:h-24 shrink-0 !min-h-16 !md:min-h-24 flex justify-between items-center px-6 md:px-8">
       <MotionTitle
-        className="text-[clamp(1.2rem,2.5cqw,3rem)]"
+        className="text-[clamp(1.2rem,2cqw,3rem)]"
         label="Chatapp by Selo"
       />
 
@@ -38,7 +38,7 @@ export default function Header() {
         <button
           onClick={() => setShowMenu(!showMenu)}
           type="button"
-          className="w-10 h-10 z-20 rounded-full relative bg-swamp-green hover:bg-swamp-green/75 active:bg-swamp-green/50 flex items-center justify-center cursor-pointer"
+          className="w-10 h-10 z-20 rounded-full relative bg-swamp-green hover:bg-swamp-green/75 active:bg-swamp-green/50 flex items-center justify-center cursor-pointer duration-200 ease transition-all"
         >
           {data?.user && (
             <span>{data?.user.firstName[0] + data?.user.lastName[0]}</span>

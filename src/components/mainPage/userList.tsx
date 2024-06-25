@@ -44,7 +44,7 @@ export default function UserList({
 
                 setCurrentSelectedChatUser(user)
               }}
-              className="p-2 bg-swamp-green/60 items-center flex flex-row rounded-lg cursor-pointer hover:bg-swamp-green/40 active:bg-swamp-green/25"
+              className="p-2 bg-swamp-green/60 items-center flex flex-row rounded-lg cursor-pointer hover:bg-swamp-green/40 active:bg-swamp-green/25 duration-200 ease transition-all"
               key={`userList${user.id}`}
             >
               <div className="w-full flex justify-center px-2">
