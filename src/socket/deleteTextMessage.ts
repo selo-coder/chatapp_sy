@@ -9,6 +9,7 @@ import {
   ServerToClientEvents,
   SocketData,
 } from "@/types/socket"
+import AWS from "aws-sdk"
 import { Server } from "socket.io"
 
 export function deleteTextMessageServer(
@@ -20,7 +21,24 @@ export function deleteTextMessageServer(
     SocketData
   >
 ) {
-  socket.on("deleteTextMessage", async ({ id, recipientId }) => {
+  socket.on("deleteTextMessage", async ({ id, recipientId, imageUrl }) => {
+    if (imageUrl) {
+      const s3 = new AWS.S3({
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      })
+
+      const imageUrlSplitted = imageUrl.split("/")
+      const fileName = imageUrlSplitted[imageUrlSplitted.length - 1]
+
+      await s3
+        .deleteObject({
+          Bucket: "chatappbucketsy",
+          Key: fileName,
+        })
+        .promise()
+    }
+
     const textMessageResponse = await prismaClient.personalChat.delete({
       where: { id },
     })
