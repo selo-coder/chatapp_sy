@@ -66,7 +66,12 @@ export default function ChatElement({
         {format(new Date(chatEntry.createdAt), "dd.MM.yyyy HH:mm")}
       </span>
 
-      <ChatElementMenu chatEntry={chatEntry} index={index} userId={userId} />
+      <ChatElementMenu
+        lastChatEntryIndex={currentLoadedChat.length - 1}
+        chatEntry={chatEntry}
+        index={index}
+        userId={userId}
+      />
     </div>
   )
 }

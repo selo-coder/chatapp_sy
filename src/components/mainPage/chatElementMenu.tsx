@@ -1,3 +1,5 @@
+"use client"
+
 import socket from "@/socket"
 import { PersonalChat } from "@/types/personalChat"
 import { useEffect, useRef, useState } from "react"
@@ -6,12 +8,14 @@ interface ChatElementMenuProps {
   chatEntry: PersonalChat
   userId: string | undefined
   index: number
+  lastChatEntryIndex: number
 }
 
 export default function ChatElementMenu({
   chatEntry,
   userId,
   index,
+  lastChatEntryIndex,
 }: ChatElementMenuProps) {
   const [showMenu, setShowMenu] = useState(false)
 
@@ -59,9 +63,21 @@ export default function ChatElementMenu({
 
       <div
         className={`absolute text-sm whitespace-nowrap p-4 h-fit z-30 bg-dark-green w-24 gap-2 items-center rounded-lg ${
-          chatEntry.senderId === userId ? "-left-[7.5rem]" : "-right-[7.5rem]"
+          chatEntry.senderId === userId
+            ? `${
+                window.innerWidth - 168 >=
+                (observerRef.current?.clientWidth || 0)
+                  ? "-left-[7.5rem]"
+                  : "left-0"
+              }`
+            : `${
+                window.innerWidth - 168 >=
+                (observerRef.current?.clientWidth || 0)
+                  ? "-right-[7.5rem]"
+                  : "right-0"
+              }`
         } ${showMenu ? "flex flex-col" : "hidden"} ${
-          index === 0 ? "-top-0" : "-top-[3.5rem]"
+          index !== lastChatEntryIndex ? "-top-0" : "-top-[3.5rem]"
         }`}
       >
         {chatEntry.senderId === userId && (
