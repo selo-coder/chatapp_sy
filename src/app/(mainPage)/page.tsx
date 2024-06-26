@@ -13,6 +13,7 @@ import { sendTextMessageClient } from "@/socket/sendTextMessage"
 import { getAllMessagesClient } from "@/socket/getAllMessages"
 import { sendOnlineStatusClient } from "@/socket/sendOnlineStatus"
 import useIsMobile from "@/utils/useIsMobile"
+import { deleteTextMessageClient } from "@/socket/deleteTextMessage"
 import socket from "../../socket"
 
 export default function Home() {
@@ -69,7 +70,7 @@ export default function Home() {
 
   // Seperate UseEffect for sendTextMessageClient to work with Current value of currentSelectedChatUser
   useEffect(() => {
-    if (currentSelectedChatUser)
+    if (currentSelectedChatUser) {
       // Socket.on event to receive newly send text message
       sendTextMessageClient({
         setCurrentLoadedChat,
@@ -78,8 +79,16 @@ export default function Home() {
         currentSelectedChatUserId: currentSelectedChatUser?.id,
       })
 
+      deleteTextMessageClient({
+        setCurrentLoadedChat,
+        socket,
+        userId: data?.user.id,
+        currentSelectedChatUserId: currentSelectedChatUser?.id,
+      })
+    }
     return () => {
       socket.off("sendTextMessage")
+      socket.off("deleteTextMessage")
     }
   }, [currentSelectedChatUser])
 

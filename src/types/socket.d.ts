@@ -15,6 +15,7 @@ export interface ServerToClientEvents {
   getUsers: (users: Account[]) => void
   getUser: (user: Account | null) => void
   sendTextMessage: (message: PersonalChat | null) => void
+  deleteTextMessage: (message: PersonalChat | null) => void
   getAllMessages: (messages: PersonalChat[]) => void
   getNewestMessage: (message: PersonalChat | null) => void
 }
@@ -35,6 +36,7 @@ export interface ClientToServerEvents {
     senderId: string
     recipientId: string
   }) => void
+  deleteTextMessage: (message: PersonalChat) => void
   getAllMessages: ({
     senderId,
     recipientId,

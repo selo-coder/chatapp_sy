@@ -9,6 +9,7 @@ import getUsers from "@/socket/getUsers"
 import getUser from "@/socket/getUser"
 import disconnectServer from "@/socket/disconnect"
 import sendInitialUserInfo from "@/socket/sendInitialUserInfo"
+import { deleteTextMessageServer } from "@/socket/deleteTextMessage"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -50,6 +51,10 @@ app.prepare().then(() => {
     //
     // send text message with a string and by a pair of recipientId and senderId
     sendTextMessageServer(socket, io)
+
+    //
+    // delete text message via message id
+    deleteTextMessageServer(socket, io)
 
     //
     // Get newest message by pair of recipientId and senderId
