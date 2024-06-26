@@ -22,7 +22,7 @@ export default function ChatElement({
 }: ChatElementProps) {
   return (
     <div
-      className={`bg-green/60 w-fit p-2 pb-5 flex flex-col gap-1 relative max-w-lg rounded-lg group ${
+      className={`bg-green/60 w-fit p-2 pb-5 flex flex-col gap-1 relative max-w-[calc(100%-24px)] sm:max-w-lg rounded-lg group ${
         chatEntry.senderId === userId
           ? `self-end ${
               currentLoadedChat[index - 1]?.senderId !== userId

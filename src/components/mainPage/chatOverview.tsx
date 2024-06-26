@@ -1,35 +1,24 @@
 "use client"
 
-import { Account } from "@/types/account"
-import { PersonalChat } from "@/types/personalChat"
 import { motion } from "framer-motion"
+
+import {
+  useCurrentLoadedChat,
+  useCurrentSelectedChatUser,
+  useCurrentLoadedWindow,
+  useMobile,
+} from "@/provider/mainDataProvider"
 import Chat from "./chat"
 import ChatInput from "./chatInput"
 import Button from "../common/button"
 
-interface ChatProps {
-  currentSelectedChatUser: Account | undefined
-  currentLoadedChat: PersonalChat[] | undefined
-  userList: Account[] | undefined
-  setUserList: (value: React.SetStateAction<Account[] | undefined>) => void
-  setCurrentLoadedWindow: React.Dispatch<
-    React.SetStateAction<"userList" | "chat" | "both" | undefined>
-  >
-  isMobile: boolean | undefined
-  currentLoadedWindow: "userList" | "chat" | "both" | undefined
-  setCurrentLoadedChat: (value: PersonalChat[] | undefined) => void
-}
+export default function ChatOverview() {
+  const { setCurrentLoadedChat } = useCurrentLoadedChat()
+  const { currentSelectedChatUser } = useCurrentSelectedChatUser()
+  const { currentLoadedWindow, setCurrentLoadedWindow } =
+    useCurrentLoadedWindow()
+  const { isMobile } = useMobile()
 
-export default function ChatOverview({
-  currentSelectedChatUser,
-  currentLoadedChat,
-  setUserList,
-  userList,
-  isMobile,
-  setCurrentLoadedWindow,
-  currentLoadedWindow,
-  setCurrentLoadedChat,
-}: ChatProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -40,8 +29,8 @@ export default function ChatOverview({
       }}
       className="w-full max-h-full h-full rounded-lg flex flex-col relative"
     >
-      <div className="w-full flex flex-row justify-between mb-2 items-center">
-        <span className="text-sm md:text-lg underline flex-1 line-clamp-1 break-all pr-2">
+      <div className="w-full flex flex-row justify-between mb-4 items-center">
+        <span className="text-sm md:text-base underline flex-1 line-clamp-1 break-all pr-2">
           {currentSelectedChatUser?.userName
             ? `${currentSelectedChatUser?.userName}`
             : "Kein Chatnutzer ausgewählt"}
@@ -59,13 +48,9 @@ export default function ChatOverview({
         )}
       </div>
 
-      <Chat currentLoadedChat={currentLoadedChat} />
+      <Chat />
 
-      <ChatInput
-        currentSelectedChatUser={currentSelectedChatUser}
-        setUserList={setUserList}
-        userList={userList}
-      />
+      <ChatInput />
     </motion.div>
   )
 }

@@ -3,6 +3,7 @@
 import Header from "@/components/header"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { MainmainDataProvider } from "@/provider/mainDataProvider"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { status } = useSession()
@@ -13,11 +14,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }
 
   return status === "authenticated" ? (
-    <div className="bg-dark-blue min-h-screen max-h-screen h-screen max-w-screen w-full overflow-hidden flex flex-col">
-      <Header />
+    <MainmainDataProvider>
+      <div className="bg-dark-blue min-h-screen max-h-screen h-screen max-w-screen w-full overflow-hidden flex flex-col">
+        <Header />
 
-      {children}
-    </div>
+        {children}
+      </div>
+    </MainmainDataProvider>
   ) : (
     <div className="h-screen w-screen flex bg-dark-blue justify-center items-center">
       <svg

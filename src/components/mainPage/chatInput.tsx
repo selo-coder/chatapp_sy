@@ -8,21 +8,17 @@ import bringToFrontById from "@/utils/bringToFrontById"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
-import { Account } from "@/types/account"
+import {
+  useCurrentSelectedChatUser,
+  useUserList,
+} from "@/provider/mainDataProvider"
 import Input from "../common/input"
 import Button from "../common/button"
 
-interface ChatInputProps {
-  currentSelectedChatUser: Account | undefined
-  userList: Account[] | undefined
-  setUserList: (value: React.SetStateAction<Account[] | undefined>) => void
-}
+export default function ChatInput() {
+  const { currentSelectedChatUser } = useCurrentSelectedChatUser()
+  const { userList, setUserList } = useUserList()
 
-export default function ChatInput({
-  currentSelectedChatUser,
-  userList,
-  setUserList,
-}: ChatInputProps) {
   const { data } = useSession()
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 

@@ -61,64 +61,68 @@ export default function ChatElementMenu({
         </svg>
       </div>
 
-      <div
-        className={`absolute text-sm whitespace-nowrap p-4 h-fit z-30 bg-dark-green w-24 gap-2 items-center rounded-lg ${
-          chatEntry.senderId === userId
-            ? `${
-                window.innerWidth - 168 >=
-                (observerRef.current?.clientWidth || 0)
-                  ? "-left-[7.5rem]"
-                  : "left-0"
-              }`
-            : `${
-                window.innerWidth - 168 >=
-                (observerRef.current?.clientWidth || 0)
-                  ? "-right-[7.5rem]"
-                  : "right-0"
-              }`
-        } ${showMenu ? "flex flex-col" : "hidden"} ${
-          index !== lastChatEntryIndex ? "-top-0" : "-top-[3.5rem]"
-        }`}
-      >
-        {chatEntry.senderId === userId && (
-          <button
-            type="button"
-            onClick={() => {
-              handleDeleteTextMessage(chatEntry)
+      {showMenu && (
+        <div
+          className={`absolute text-sm whitespace-nowrap p-4 h-fit z-30 bg-dark-green w-24 gap-2 items-center rounded-lg ${
+            chatEntry.senderId === userId
+              ? `${
+                  window.innerWidth - 168 >=
+                  (observerRef.current?.clientWidth || 0)
+                    ? "-left-[7.5rem]"
+                    : "left-0"
+                }`
+              : `${
+                  window.innerWidth - 168 >=
+                  (observerRef.current?.clientWidth || 0)
+                    ? "-right-[7.5rem]"
+                    : "right-0"
+                }`
+          } flex flex-col ${
+            index !== lastChatEntryIndex || lastChatEntryIndex === 0
+              ? "-top-0"
+              : "-top-[3.5rem]"
+          }`}
+        >
+          {chatEntry.senderId === userId && (
+            <button
+              type="button"
+              onClick={() => {
+                handleDeleteTextMessage(chatEntry)
 
+                setShowMenu(false)
+              }}
+              className="w-fit cursor-pointer group/1"
+            >
+              <span>Löschen</span>
+              <div className="h-px bg-white transition-all duration-200 ease-in-out w-0 group-hover/1:w-full" />
+            </button>
+          )}
+          <button
+            onClick={() => {
+              if (navigator.clipboard)
+                navigator.clipboard.writeText(chatEntry.textMessage || "")
               setShowMenu(false)
             }}
-            className="w-fit cursor-pointer group/1"
+            type="button"
+            className="w-fit cursor-pointer group/2"
           >
-            <span>Löschen</span>
-            <div className="h-px bg-white transition-all duration-200 ease-in-out w-0 group-hover/1:w-full" />
+            <span>Text kopieren</span>
+            <div className="h-px" />
+
+            <div className="h-px bg-white transition-all duration-200 ease-in-out w-0 group-hover/2:w-full" />
           </button>
-        )}
-        <button
-          onClick={() => {
-            if (navigator.clipboard)
-              navigator.clipboard.writeText(chatEntry.textMessage || "")
-            setShowMenu(false)
-          }}
-          type="button"
-          className="w-fit cursor-pointer group/2"
-        >
-          <span>Text kopieren</span>
-          <div className="h-px" />
+          <button
+            onClick={() => setShowMenu(false)}
+            type="button"
+            className="w-fit cursor-pointer group/3"
+          >
+            <span>Weiterleiten</span>
+            <div className="h-px" />
 
-          <div className="h-px bg-white transition-all duration-200 ease-in-out w-0 group-hover/2:w-full" />
-        </button>
-        <button
-          onClick={() => setShowMenu(false)}
-          type="button"
-          className="w-fit cursor-pointer group/3"
-        >
-          <span>Weiterleiten</span>
-          <div className="h-px" />
-
-          <div className=" h-px bg-white transition-all duration-200 ease-in-out w-0 group-hover/3:w-full" />
-        </button>
-      </div>
+            <div className=" h-px bg-white transition-all duration-200 ease-in-out w-0 group-hover/3:w-full" />
+          </button>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,23 +1,20 @@
 "use client"
 
+import {
+  useUserList,
+  useCurrentSelectedChatUser,
+  useCurrentLoadedWindow,
+  useMobile,
+} from "@/provider/mainDataProvider"
 import { Account } from "@/types/account"
 import { motion } from "framer-motion"
 
-interface UserListProps {
-  userList: Account[] | undefined
-  setCurrentSelectedChatUser: (user: Account) => void
-  isMobile: boolean | undefined
-  setCurrentLoadedWindow: React.Dispatch<
-    React.SetStateAction<"userList" | "chat" | "both" | undefined>
-  >
-}
+export default function UserList() {
+  const { userList } = useUserList()
+  const { setCurrentSelectedChatUser } = useCurrentSelectedChatUser()
+  const { setCurrentLoadedWindow } = useCurrentLoadedWindow()
+  const { isMobile } = useMobile()
 
-export default function UserList({
-  userList,
-  setCurrentSelectedChatUser,
-  isMobile,
-  setCurrentLoadedWindow,
-}: UserListProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}

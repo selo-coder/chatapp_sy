@@ -3,19 +3,16 @@
 import { PersonalChat } from "@/types/personalChat"
 import { useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
+import { useCurrentLoadedChat } from "@/provider/mainDataProvider"
 import ChatElement from "./chatElement"
 
-interface ChatProps {
-  currentLoadedChat: PersonalChat[] | undefined
-}
+export default function Chat() {
+  const { currentLoadedChat } = useCurrentLoadedChat()
 
-export default function Chat({ currentLoadedChat }: ChatProps) {
   const { data } = useSession()
   const ref = useRef<HTMLDivElement | null>(null)
   const [update, setUpdate] = useState(false)
-  const [openImageList, setOpenImageList] = useState<boolean[]>(
-    currentLoadedChat?.map(() => false) || []
-  )
+  const [openImageList, setOpenImageList] = useState<boolean[] | null>(null)
 
   // Scroll down on reloading or first load of chat
   useEffect(() => {
@@ -23,13 +20,16 @@ export default function Chat({ currentLoadedChat }: ChatProps) {
   }, [currentLoadedChat])
 
   const handleOpenImageChange = (imageIndex: number) => {
-    openImageList.splice(imageIndex, 1, !openImageList[imageIndex])
+    if (openImageList)
+      openImageList.splice(imageIndex, 1, !openImageList[imageIndex])
     setUpdate(!update)
   }
 
   // Set Initial values for openImageList
   useEffect(() => {
-    if (currentLoadedChat) setOpenImageList(currentLoadedChat.map(() => false))
+    if (currentLoadedChat && openImageList == null)
+      setOpenImageList(currentLoadedChat.map(() => false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLoadedChat])
 
   return (
@@ -43,7 +43,7 @@ export default function Chat({ currentLoadedChat }: ChatProps) {
               index={index}
               currentLoadedChat={currentLoadedChat}
               handleOpenImageChange={handleOpenImageChange}
-              openImageList={openImageList}
+              openImageList={openImageList || []}
               userId={data?.user.id}
             />
           ))}

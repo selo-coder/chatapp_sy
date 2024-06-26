@@ -2,30 +2,33 @@
 
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { Account } from "@/types/account"
-import { PersonalChat } from "@/types/personalChat"
 import UserList from "@/components/mainPage/userList"
 import ChatOverview from "@/components/mainPage/chatOverview"
 import { getAllUsersClient } from "@/socket/getAllUsers"
 import { sendTextMessageClient } from "@/socket/sendTextMessage"
 import { getAllMessagesClient } from "@/socket/getAllMessages"
 import { sendOnlineStatusClient } from "@/socket/sendOnlineStatus"
-import useIsMobile from "@/utils/useIsMobile"
 import { deleteTextMessageClient } from "@/socket/deleteTextMessage"
+import {
+  useCurrentLoadedChat,
+  useCurrentLoadedWindow,
+  useCurrentSelectedChatUser,
+  useMobile,
+  useUserList,
+} from "@/provider/mainDataProvider"
 import socket from "../../socket"
 
 export default function Home() {
   const { data } = useSession()
-  const isMobile = useIsMobile()
-  const [userList, setUserList] = useState<Account[]>()
-  const [currentSelectedChatUser, setCurrentSelectedChatUser] =
-    useState<Account>()
-  const [currentLoadedChat, setCurrentLoadedChat] = useState<PersonalChat[]>()
-  const [currentLoadedWindow, setCurrentLoadedWindow] = useState<
-    "userList" | "chat" | "both" | undefined
-  >(undefined)
+  const { setUserList, userList } = useUserList()
+  const { setCurrentLoadedChat } = useCurrentLoadedChat()
+  const { currentSelectedChatUser, setCurrentSelectedChatUser } =
+    useCurrentSelectedChatUser()
+  const { currentLoadedWindow, setCurrentLoadedWindow } =
+    useCurrentLoadedWindow()
+  const { isMobile } = useMobile()
 
   useEffect(() => {
     if (socket.connected === false) socket.connect()
@@ -103,27 +106,9 @@ export default function Home() {
 
   return (
     <div className="w-full flex flex-col md:flex-row gap-4 md:gap-8 p-4 md:p-8 h-[calc(100%-64px)] md:h-[calc(100%-96px)]">
-      {currentLoadedWindow !== "chat" && (
-        <UserList
-          isMobile={isMobile}
-          setCurrentLoadedWindow={setCurrentLoadedWindow}
-          setCurrentSelectedChatUser={setCurrentSelectedChatUser}
-          userList={userList}
-        />
-      )}
+      {currentLoadedWindow !== "chat" && <UserList />}
 
-      {currentLoadedWindow !== "userList" && (
-        <ChatOverview
-          currentLoadedWindow={currentLoadedWindow}
-          setCurrentLoadedChat={setCurrentLoadedChat}
-          setCurrentLoadedWindow={setCurrentLoadedWindow}
-          isMobile={isMobile}
-          setUserList={setUserList}
-          userList={userList}
-          currentLoadedChat={currentLoadedChat}
-          currentSelectedChatUser={currentSelectedChatUser}
-        />
-      )}
+      {currentLoadedWindow !== "userList" && <ChatOverview />}
     </div>
   )
 }
