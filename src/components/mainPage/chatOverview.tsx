@@ -53,7 +53,7 @@ export default function ChatOverview({
               setCurrentLoadedChat(undefined)
               setCurrentLoadedWindow("userList")
             }}
-            className="text-xs h-6 w-fit px-2 rounded bg-dark-green hover:bg-dark-green/75 active:bg-dark-green/50 duration-200 ease transition-all"
+            className="text-xs h-6 w-fit px-2 rounded bg-dark-green hover:bg-dark-green/75 active:bg-dark-green/50 duration-200 ease-in-out transition-all"
             label="Zurück zur Übersicht"
           />
         )}

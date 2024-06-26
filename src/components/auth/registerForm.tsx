@@ -125,7 +125,7 @@ export default function RegisterForm() {
       <Button label="Registrieren" isLoading={registerIsLoading} />
 
       <Link
-        className="w-fit underline text-xs hover:text-white duration-200 ease transition-all"
+        className="w-fit underline text-xs hover:text-white duration-200 ease-in-out transition-all"
         href="/auth/login"
       >
         Sie haben schon ein Konto? Jetzt anmelden!

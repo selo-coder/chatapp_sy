@@ -38,7 +38,7 @@ export default function Header() {
         <button
           onClick={() => setShowMenu(!showMenu)}
           type="button"
-          className="w-10 h-10 z-20 rounded-full relative bg-swamp-green hover:bg-swamp-green/75 active:bg-swamp-green/50 flex items-center justify-center cursor-pointer duration-200 ease transition-all"
+          className="w-10 h-10 z-20 rounded-full relative bg-swamp-green hover:bg-swamp-green/75 active:bg-swamp-green/50 flex items-center justify-center cursor-pointer duration-200 ease-in-out transition-all"
         >
           {data?.user && (
             <span>{data?.user.firstName[0] + data?.user.lastName[0]}</span>

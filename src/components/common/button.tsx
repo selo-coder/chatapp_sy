@@ -19,7 +19,7 @@ export default function Button({
     <button
       {...buttonProps}
       className={twMerge(
-        "bg-green rounded-lg h-10 hover:bg-green/75 active:bg-green/50 text-gray-300 flex justify-center items-center font-medium w-full duration-200 ease transition-all",
+        "bg-green rounded-lg h-10 hover:bg-green/75 active:bg-green/50 text-gray-300 flex justify-center items-center font-medium w-full duration-200 ease-in-out transition-all",
         className
       )}
       type="submit"

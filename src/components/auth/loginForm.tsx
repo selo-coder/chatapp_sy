@@ -131,7 +131,7 @@ export default function LoginForm() {
       <Button label="Login" isLoading={loginIsLoading} />
 
       <Link
-        className="w-fit underline text-xs hover:text-white duration-200 ease transition-all"
+        className="w-fit underline text-xs hover:text-white duration-200 ease-in-out transition-all"
         href="/auth/register"
       >
         Kein Konto? Erstellen Sie jetzt eins!
