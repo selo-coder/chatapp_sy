@@ -7,7 +7,7 @@ import {
   useMobile,
 } from "@/provider/mainDataProvider"
 import { Account } from "@/types/account"
-import { motion } from "framer-motion"
+import { FadeInDiv } from "../common/fadeInElements"
 
 export default function UserList() {
   const { userList } = useUserList()
@@ -16,15 +16,7 @@ export default function UserList() {
   const { isMobile } = useMobile()
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{
-        duration: 0.75,
-        ease: "easeInOut",
-      }}
-      className="p-4 md:p-8 max-h-full grow h-full flex flex-col gap-4 w-full md:w-96 bg-green/25 rounded-lg"
-    >
+    <FadeInDiv className="p-4 md:p-8 max-h-full grow h-full flex flex-col gap-4 w-full md:w-96 bg-green/25 rounded-lg">
       <span className="text-sm underline md:text-base">
         {userList && userList.length > 0
           ? "Alle User"
@@ -59,6 +51,6 @@ export default function UserList() {
             </button>
           ))}
       </div>
-    </motion.div>
+    </FadeInDiv>
   )
 }

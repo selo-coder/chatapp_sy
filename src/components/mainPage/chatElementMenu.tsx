@@ -3,6 +3,7 @@
 import socket from "@/socket"
 import { PersonalChat } from "@/types/personalChat"
 import { useEffect, useRef, useState } from "react"
+import ForwardTextMessageModal from "../modal/forwardMessageModal"
 
 interface ChatElementMenuProps {
   chatEntry: PersonalChat
@@ -18,6 +19,7 @@ export default function ChatElementMenu({
   lastChatEntryIndex,
 }: ChatElementMenuProps) {
   const [showMenu, setShowMenu] = useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   const observerRef = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
@@ -39,6 +41,14 @@ export default function ChatElementMenu({
 
   return (
     <div ref={observerRef}>
+      {showModal && (
+        <ForwardTextMessageModal
+          chatEntry={chatEntry}
+          setShowModal={setShowModal}
+          userId={userId}
+        />
+      )}
+
       <div
         className={`absolute top-0 md:hidden group-hover:flex h-full ${
           chatEntry.senderId === userId ? "-left-6" : "-right-6"
@@ -60,7 +70,6 @@ export default function ChatElementMenu({
           />
         </svg>
       </div>
-
       {showMenu && (
         <div
           className={`absolute text-sm whitespace-nowrap p-4 h-fit z-30 bg-dark-green w-24 gap-2 items-center rounded-lg ${
@@ -101,6 +110,7 @@ export default function ChatElementMenu({
             onClick={() => {
               if (navigator.clipboard)
                 navigator.clipboard.writeText(chatEntry.textMessage || "")
+
               setShowMenu(false)
             }}
             type="button"
@@ -112,14 +122,18 @@ export default function ChatElementMenu({
             <div className="h-px bg-white transition-all duration-200 ease-in-out w-0 group-hover/2:w-full" />
           </button>
           <button
-            onClick={() => setShowMenu(false)}
+            onClick={() => {
+              setShowMenu(false)
+
+              setShowModal(true)
+            }}
             type="button"
             className="w-fit cursor-pointer group/3"
           >
             <span>Weiterleiten</span>
             <div className="h-px" />
 
-            <div className=" h-px bg-white transition-all duration-200 ease-in-out w-0 group-hover/3:w-full" />
+            <div className="h-px bg-white transition-all duration-200 ease-in-out w-0 group-hover/3:w-full" />
           </button>
         </div>
       )}

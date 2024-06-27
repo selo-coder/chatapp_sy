@@ -10,6 +10,7 @@ import getUser from "@/socket/getUser"
 import disconnectServer from "@/socket/disconnect"
 import sendInitialUserInfo from "@/socket/sendInitialUserInfo"
 import { deleteTextMessageServer } from "@/socket/deleteTextMessage"
+import { forwardTextMessageServer } from "@/socket/forwardTextMessage"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -39,6 +40,10 @@ app.prepare().then(() => {
     //
     // Get and then set user id from the database in socket.data
     sendInitialUserInfo(socket, io)
+
+    //
+    // Get a message, with recipientId and senderId, then forward them accordingly
+    forwardTextMessageServer(socket, io)
 
     //
     // Broadcast new IsOnline Status to all users on disconnect of socket

@@ -18,6 +18,7 @@ import {
   useMobile,
   useUserList,
 } from "@/provider/mainDataProvider"
+import { forwardTextMessageClient } from "@/socket/forwardTextMessage"
 import socket from "../../socket"
 
 export default function Home() {
@@ -60,7 +61,7 @@ export default function Home() {
     getAllMessagesClient({ setCurrentLoadedChat, socket })
 
     // Socket.on event to receive change of an online status
-    sendOnlineStatusClient({ setUserList, socket })
+    sendOnlineStatusClient({ setUserList, socket, setCurrentSelectedChatUser })
 
     return () => {
       socket.off("getAllUsers")
@@ -88,10 +89,18 @@ export default function Home() {
         userId: data?.user.id,
         currentSelectedChatUserId: currentSelectedChatUser?.id,
       })
+
+      forwardTextMessageClient({
+        setCurrentLoadedChat,
+        socket,
+        userId: data?.user.id,
+        currentSelectedChatUserId: currentSelectedChatUser?.id,
+      })
     }
     return () => {
       socket.off("sendTextMessage")
       socket.off("deleteTextMessage")
+      socket.off("forwardTextMessage")
     }
   }, [currentSelectedChatUser])
 

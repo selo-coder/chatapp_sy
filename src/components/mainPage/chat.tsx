@@ -34,9 +34,9 @@ export default function Chat() {
 
   return (
     <div ref={ref} className="grow h-full overflow-y-auto">
-      <div className="mt-4 md:mt-8 flex flex-col gap-2">
-        {currentLoadedChat &&
-          currentLoadedChat.map((chatEntry: PersonalChat, index: number) => (
+      {currentLoadedChat && currentLoadedChat.length > 0 ? (
+        <div className="mt-4 md:mt-8 flex flex-col gap-2">
+          {currentLoadedChat.map((chatEntry: PersonalChat, index: number) => (
             <ChatElement
               key={`chatEntry${chatEntry.id}`}
               chatEntry={chatEntry}
@@ -47,7 +47,14 @@ export default function Chat() {
               userId={data?.user.id}
             />
           ))}
-      </div>
+        </div>
+      ) : (
+        <div className="w-full h-full grow flex flex-col justify-center text-center gap-2 items-center">
+          <span>Noch keine Nachrichten in diesem Chat!</span>
+
+          <span>Schreibe die erste Nachricht!</span>
+        </div>
+      )}
     </div>
   )
 }

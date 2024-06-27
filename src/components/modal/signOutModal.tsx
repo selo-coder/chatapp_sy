@@ -27,7 +27,7 @@ export default function SignOutModal({ setShowModal }: SignOutModalProps) {
           Du bist schon als <strong>{data?.user.userName}</strong> angemeldet.
           Willst du dich abmelden um fortzufahren?
         </span>
-        <div className="flex flex-row w-full gap-8">
+        <div className="flex flex-row w-full gap-6 md:gap-8">
           <Button
             type="button"
             onClick={() => {
